@@ -1,0 +1,6 @@
+{
+  "name": "Devis TV",
+  "identifier": "com.devz.app.devis-tv",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}
