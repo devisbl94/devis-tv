@@ -15,7 +15,7 @@ export const getTopRated = async type => {
 
 export const getAnimatedMovies = async type => {
     return fetch(
-        `${base}/discover/${type}/?api_key=${apiKey}&sort_by=popularity.desc&include_adult=false&page=1&with_genres=16`
+        `${base}/discover/${type}?api_key=${apiKey}&sort_by=popularity.desc&include_adult=false&page=1&with_genres=16`
     )
 }
 
@@ -29,6 +29,6 @@ export const getShowsAiring = async () => {
 
 export const getDocumentaries = async type => {
     return fetch(
-        `${base}/discover/${type}/?api_key=${apiKey}&sort_by=popularity.desc&include_adult=false&page=1&with_genres=99`
+        `${base}/discover/${type}?api_key=${apiKey}&sort_by=popularity.desc&include_adult=false&page=1&with_genres=99`
     )
 }
