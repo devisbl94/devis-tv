@@ -45,6 +45,7 @@ export default class MediaCarousel extends Lightning.Component {
                     })
                 })
                 this._row.items = items
+                this._data = data
             })
             .catch(error => {
                 console.log(error)
@@ -53,6 +54,10 @@ export default class MediaCarousel extends Lightning.Component {
 
     _getFocused() {
         return this._row
+    }
+
+    _handleEnter() {
+        this.fireAncestors('$getItemSelected', this._row.selected.data)
     }
 
     set label(value) {
@@ -69,5 +74,40 @@ export default class MediaCarousel extends Lightning.Component {
 
     get _row() {
         return this.tag('Row')
+    }
+
+    applyFilter(filterId) {
+        let items = []
+        if (filterId == 0) {
+            this._data.results.map(item => {
+                items.push({
+                    type: MediaItem,
+                    data: item,
+                })
+            })
+            this._data.results.map(item => {
+                items.push({
+                    type: MediaItem,
+                    data: item,
+                })
+            })
+        } else {
+            this._data.results.map(item => {
+                for (const index in item) {
+                    if (index == 'genre_ids') {
+                        item[index].map(genreId => {
+                            if (genreId === filterId) {
+                                items.push({
+                                    type: MediaItem,
+                                    data: item,
+                                })
+                            }
+                        })
+                    }
+                }
+            })
+        }
+
+        this._row.items = items
     }
 }

@@ -4,5 +4,5 @@ export const getImgUrl = (imgPath, width = 185) => {
 
 export const formatDate = date => {
     const newDate = new Date(date)
-    return newDate.getMonth() + 1 + '/' + (newDate.getDate() + 1) + '/' + newDate.getFullYear()
+    return newDate.getMonth() + 1 + '/' + newDate.getDate() + '/' + newDate.getFullYear()
 }

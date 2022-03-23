@@ -155,30 +155,49 @@ export default class MediaItem extends Lightning.Component {
     }
 
     set data(data) {
+        this._data = {
+            imageUrl:
+                data.poster_path == null
+                    ? Utils.asset('./images/unavailable.png')
+                    : data.poster_path,
+            title: typeof data.title !== 'undefined' ? data.title : data.name,
+            genreIds: [...data.genre_ids],
+            releaseDate:
+                typeof data.release_date !== 'undefined'
+                    ? 'Release date: ' + formatDate(data.release_date)
+                    : 'First aired: ' + formatDate(data.first_air_date),
+            desc: data.overview,
+            rating:
+                parseFloat(data.vote_average) > 0
+                    ? 'Rating: ' + String(data.vote_average)
+                    : 'Rating: N/A',
+        }
+
         this.tag('ImageWrapper').patch({
             Image: {
                 texture: {
                     type: Lightning.textures.ImageTexture,
-                    src: getImgUrl(data.poster_path, 300),
+                    src:
+                        this._data.imageUrl.indexOf('unavailable') > -1
+                            ? this._data.imageUrl
+                            : getImgUrl(this._data.imageUrl, 300),
                 },
             },
             Info: {
                 Title: {
-                    text: typeof data.title !== 'undefined' ? data.title : data.name,
+                    text: this._data.title,
                 },
                 ReleaseDate: {
-                    text:
-                        typeof data.release_date !== 'undefined'
-                            ? 'Release date: ' + formatDate(data.release_date)
-                            : 'First aired: ' + formatDate(data.first_air_date),
+                    text: this._data.releaseDate,
                 },
                 Rating: {
-                    text:
-                        parseFloat(data.vote_average) > 0
-                            ? 'Rating: ' + String(data.vote_average)
-                            : 'Rating: N/A',
+                    text: this._data.rating,
                 },
             },
         })
+    }
+
+    get data() {
+        return this._data
     }
 }
