@@ -126,7 +126,7 @@ export default class MainPage extends Lightning.Component {
                         },
                         {
                             ...ButtonStyle,
-                            title: 'Mistery',
+                            title: 'Mystery',
                             genreId: 9648,
                         },
                         {

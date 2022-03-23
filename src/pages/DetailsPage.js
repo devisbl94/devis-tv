@@ -55,7 +55,6 @@ export default class DetailsPage extends Lightning.Component {
                         x: 200,
                         y: 750,
                         itemSpacing: 75,
-                        wrapSelected: true,
                         items: [
                             {
                                 type: Button,
