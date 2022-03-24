@@ -1,4 +1,4 @@
-import { Lightning, Colors, Utils, Registry } from '@lightningjs/sdk'
+import { Lightning, Colors, Utils } from '@lightningjs/sdk'
 import { getImgUrl, formatDate } from '../lib/tools'
 
 export default class MediaItem extends Lightning.Component {
@@ -117,10 +117,8 @@ export default class MediaItem extends Lightning.Component {
         this._spinRotation.start()
 
         this.tag('ImageWrapper.Image').on('txLoaded', () => {
-            Registry.setTimeout(() => {
-                this.tag('ImageWrapper.Image').setSmooth('alpha', 1)
-                this._spinRotation.stop()
-            }, 1000)
+            this.tag('ImageWrapper.Image').setSmooth('alpha', 1)
+            this._spinRotation.stop()
         })
 
         this._focusAnimation = this.animation({
@@ -134,7 +132,7 @@ export default class MediaItem extends Lightning.Component {
         })
 
         this._fadeAnimation = this.animation({
-            delay: 0.7,
+            delay: 0.4,
             duration: 0.3,
             actions: [{ t: 'Info', p: 'alpha', v: { 0: 0, 1: 0.8 } }],
         })
