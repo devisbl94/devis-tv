@@ -1,4 +1,4 @@
-import { Lightning, Colors } from '@lightningjs/sdk'
+import { Lightning, Colors, Registry } from '@lightningjs/sdk'
 import { Row } from '@lightningjs/ui-components'
 import MediaItem from './MediaItem'
 
@@ -144,12 +144,21 @@ export default class MediaCarousel extends Lightning.Component {
             })
         }
 
-        if (items.length == 0) {
-            this._row.items = []
-            this.tag('Row.PlaceHolder').setSmooth('alpha', 1)
-        } else {
+        this._row.items = []
+        if (items.length > 0) {
             this.tag('Row.PlaceHolder').setSmooth('alpha', 0.0001)
-            this._row.items = items
+            let count = 0
+            let interval = Registry.setInterval(() => {
+                if (count == items.length) {
+                    Registry.clearInterval(interval)
+                }
+                if (items[count]) {
+                    this._row.appendItems([items[count]])
+                }
+                count++
+            }, 30)
+        } else {
+            this.tag('Row.PlaceHolder').setSmooth('alpha', 1)
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Lightning, Utils } from '@lightningjs/sdk'
+import { Lightning, Utils, Registry } from '@lightningjs/sdk'
 import { Column, Row, Button } from '@lightningjs/ui-components'
 import MediaCarousel from '../components/MediaCarousel'
 import {
@@ -171,6 +171,7 @@ export default class MainPage extends Lightning.Component {
     }
 
     selectedChange(itemSelected) {
+        Registry.clearIntervals()
         this.tag('Content').items.map(row => {
             row.applyFilter(itemSelected.genreId)
         })
