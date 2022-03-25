@@ -77,12 +77,13 @@ export default class App extends Lightning.Component {
                 }
                 _handleBack() {
                     this._setState('ShowDetails')
+                    this._mediaPlayer.StopVideo()
                 }
                 _handleLeft() {
-                    this._mediaPlayer.SkipForward()
+                    this._mediaPlayer.SkipBackwards()
                 }
                 _handleRight() {
-                    this._mediaPlayer.SkipBackwards()
+                    this._mediaPlayer.SkipForward()
                 }
             },
         ]
