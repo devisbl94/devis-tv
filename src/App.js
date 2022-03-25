@@ -80,7 +80,7 @@ export default class App extends Lightning.Component {
                     this._mediaPlayer.StopVideo()
                 }
                 _handleLeft() {
-                    this._mediaPlayer.SkipBackwards()
+                    this._mediaPlayer.SkipBackward()
                 }
                 _handleRight() {
                     this._mediaPlayer.SkipForward()

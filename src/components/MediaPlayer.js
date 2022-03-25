@@ -19,11 +19,12 @@ export default class MediaPlayer extends Lightning.Component {
     }
 
     PlayVideo() {
+        VideoPlayer.open(VideoPlayer.src)
         VideoPlayer.play()
     }
 
     StopVideo() {
-        VideoPlayer.reload()
+        VideoPlayer.pause()
     }
 
     SkipForward() {
