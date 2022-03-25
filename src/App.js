@@ -20,6 +20,7 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 import MainPage from './pages/MainPage'
 import DetailsPage from './pages/DetailsPage'
+import MediaPlayer from './components/MediaPlayer'
 
 export default class App extends Lightning.Component {
     static getFonts() {
@@ -34,6 +35,9 @@ export default class App extends Lightning.Component {
             DetailsPage: {
                 type: DetailsPage,
             },
+            MediaPlayer: {
+                type: MediaPlayer,
+            },
         }
     }
 
@@ -41,7 +45,7 @@ export default class App extends Lightning.Component {
         return [
             class ShowMain extends this {
                 _getFocused() {
-                    return this.tag('MainPage')
+                    return this._mainPage
                 }
             },
             class ShowDetails extends this {
@@ -60,6 +64,27 @@ export default class App extends Lightning.Component {
                     this._setState('ShowMain')
                 }
             },
+            class ShowPlayer extends this {
+                $enter() {
+                    this._mainPage.setSmooth('alpha', 0.0001)
+                    this._mediaPlayer.PlayVideo()
+                }
+                $exit() {
+                    this._mainPage.setSmooth('alpha', 1)
+                }
+                _getFocused() {
+                    return this._mediaPlayer
+                }
+                _handleBack() {
+                    this._setState('ShowDetails')
+                }
+                _handleLeft() {
+                    this._mediaPlayer.SkipForward()
+                }
+                _handleRight() {
+                    this._mediaPlayer.SkipBackwards()
+                }
+            },
         ]
     }
 
@@ -76,7 +101,19 @@ export default class App extends Lightning.Component {
         this._setState('ShowMain')
     }
 
+    $enterPlayer() {
+        this._setState('ShowPlayer')
+    }
+
+    get _mainPage() {
+        return this.tag('MainPage')
+    }
+
     get _detailsPage() {
         return this.tag('DetailsPage')
+    }
+
+    get _mediaPlayer() {
+        return this.tag('MediaPlayer')
     }
 }

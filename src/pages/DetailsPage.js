@@ -65,6 +65,9 @@ export default class DetailsPage extends Lightning.Component {
                                     size: 16,
                                     spacing: 8,
                                 },
+                                onEnter: event => {
+                                    event.fireAncestors('$enterPlayer')
+                                },
                             },
                             {
                                 type: Button,
