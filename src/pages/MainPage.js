@@ -16,7 +16,8 @@ export default class MainPage extends Lightning.Component {
         const ButtonStyle = {
             type: Button,
             radius: 5,
-            h: 60,
+            h: 80,
+            w: 170,
         }
 
         return {
@@ -40,8 +41,8 @@ export default class MainPage extends Lightning.Component {
                     type: Row,
                     alpha: 1,
                     x: 300,
-                    y: 80,
-                    itemSpacing: 40,
+                    y: 60,
+                    itemSpacing: 60,
                     scrollIndex: 0,
                     signals: {
                         selectedChange: true,

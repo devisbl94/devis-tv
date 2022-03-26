@@ -67,13 +67,16 @@ export default class App extends Lightning.Component {
             class ShowPlayer extends this {
                 $enter() {
                     this._mainPage.setSmooth('alpha', 0.0001)
-                    this._mediaPlayer.PlayVideo()
+                    this._mediaPlayer.StartVideo()
                 }
                 $exit() {
                     this._mainPage.setSmooth('alpha', 1)
                 }
                 _getFocused() {
                     return this._mediaPlayer
+                }
+                _handleEnter() {
+                    this._mediaPlayer.PlayPauseVideo()
                 }
                 _handleBack() {
                     this._setState('ShowDetails')
@@ -114,6 +117,10 @@ export default class App extends Lightning.Component {
 
     $enterPlayer() {
         this._setState('ShowPlayer')
+    }
+
+    $exitPlayer() {
+        this._setState('ShowDetails')
     }
 
     get _mainPage() {
