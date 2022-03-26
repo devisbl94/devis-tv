@@ -87,7 +87,7 @@ export default class App extends Lightning.Component {
                 }
                 _captureKey(event) {
                     switch (event.keyCode) {
-                        case 10008:
+                        case 10009:
                             this._handleBack()
                             break
 
