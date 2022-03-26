@@ -29,68 +29,6 @@ export default class MainPage extends Lightning.Component {
             Content: {
                 type: Column,
                 y: 200,
-                items: [
-                    {
-                        type: MediaCarousel,
-                        label: 'Popular movies',
-                        category: 'movie',
-                        endpoint: getPopular,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'Movies trending right now',
-                        category: 'movie',
-                        endpoint: getTrending,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'Top rated movies',
-                        category: 'movie',
-                        endpoint: getTopRated,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'Popular animated movies',
-                        category: 'movie',
-                        endpoint: getAnimatedMovies,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'Upcoming movie releases',
-                        category: 'movie',
-                        endpoint: getUpcomingMovieReleases,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'Popular series',
-                        category: 'tv',
-                        endpoint: getPopular,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'TV shows trending right now',
-                        category: 'tv',
-                        endpoint: getTrending,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'Top rated series',
-                        category: 'tv',
-                        endpoint: getTopRated,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'TV shows airing today',
-                        category: 'tv',
-                        endpoint: getShowsAiring,
-                    },
-                    {
-                        type: MediaCarousel,
-                        label: 'Recommended documentaries',
-                        category: 'tv',
-                        endpoint: getDocumentaries,
-                    },
-                ],
             },
             Header: {
                 alpha: 0.8,
@@ -101,8 +39,8 @@ export default class MainPage extends Lightning.Component {
                 NavBar: {
                     type: Row,
                     alpha: 1,
-                    x: 150,
-                    y: 60,
+                    x: 300,
+                    y: 80,
                     itemSpacing: 40,
                     scrollIndex: 0,
                     signals: {
@@ -145,15 +83,87 @@ export default class MainPage extends Lightning.Component {
         }
     }
 
-    _init() {
-        this._setState('NavBar')
+    async _init() {
+        const contentData = [
+            {
+                label: 'Popular movies',
+                category: 'movie',
+                endpoint: getPopular,
+            },
+            {
+                label: 'Movies trending right now',
+                category: 'movie',
+                endpoint: getTrending,
+            },
+            {
+                label: 'Top rated movies',
+                category: 'movie',
+                endpoint: getTopRated,
+            },
+            {
+                label: 'Popular animated movies',
+                category: 'movie',
+                endpoint: getAnimatedMovies,
+            },
+            {
+                label: 'Upcoming movie releases',
+                category: 'movie',
+                endpoint: getUpcomingMovieReleases,
+            },
+            {
+                label: 'Popular series',
+                category: 'tv',
+                endpoint: getPopular,
+            },
+            {
+                label: 'TV shows trending right now',
+                category: 'tv',
+                endpoint: getTrending,
+            },
+            {
+                label: 'Top rated series',
+                category: 'tv',
+                endpoint: getTopRated,
+            },
+            {
+                label: 'TV shows airing today',
+                category: 'tv',
+                endpoint: getShowsAiring,
+            },
+            {
+                label: 'Recommended documentaries',
+                category: 'tv',
+                endpoint: getDocumentaries,
+            },
+        ]
+
+        this._data = []
+        contentData.map(async row => {
+            const response = await row.endpoint(row.category)
+            const data = (await response.json()).results
+
+            this._content.appendItems([
+                {
+                    type: MediaCarousel,
+                    label: row.label,
+                    data: data,
+                },
+            ])
+
+            this._data.push({
+                label: row.label,
+                data: data,
+            })
+
+            this._setState('NavBar')
+        })
     }
 
     static _states() {
         return [
             class NavBar extends this {
                 _getFocused() {
-                    return this.tag('NavBar')
+                    return this._navbar
                 }
                 _handleDown() {
                     this._setState('Content')
@@ -161,7 +171,7 @@ export default class MainPage extends Lightning.Component {
             },
             class Content extends this {
                 _getFocused() {
-                    return this.tag('Content')
+                    return this._content
                 }
                 _handleUp() {
                     this._setState('NavBar')
@@ -170,10 +180,49 @@ export default class MainPage extends Lightning.Component {
         ]
     }
 
+    get _navbar() {
+        return this.tag('NavBar')
+    }
+
+    get _content() {
+        return this.tag('Content')
+    }
+
     selectedChange(itemSelected) {
         Registry.clearIntervals()
-        this.tag('Content').items.map(row => {
-            row.applyFilter(itemSelected.genreId)
+        this._content.items = []
+        this._data.map(row => {
+            if (itemSelected.genreId === 0) {
+                this._content.appendItems([
+                    {
+                        type: MediaCarousel,
+                        label: row.label,
+                        data: row.data,
+                    },
+                ])
+            } else {
+                let items = []
+                row.data.map(item => {
+                    for (const index in item) {
+                        if (index == 'genre_ids') {
+                            item[index].map(genreId => {
+                                if (itemSelected.genreId === genreId) {
+                                    items.push(item)
+                                }
+                            })
+                        }
+                    }
+                })
+                if (items.length > 0) {
+                    this._content.appendItems([
+                        {
+                            type: MediaCarousel,
+                            label: row.label,
+                            data: items,
+                        },
+                    ])
+                }
+            }
         })
     }
 }

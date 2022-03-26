@@ -42,28 +42,30 @@ export default class DetailsPage extends Lightning.Component {
                         y: 250,
                         text: {
                             ...textStyle,
-                            lineHeight: 36,
+                            lineHeight: 40,
                             wordWrapWidth: 700,
                             wordWrap: true,
-                            maxLines: 12,
+                            maxLines: 11,
                             maxLinesSuffix: '...',
-                            fontSize: 24,
+                            fontSize: 28,
                         },
                     },
                     Buttons: {
                         type: Row,
                         x: 200,
                         y: 750,
-                        itemSpacing: 75,
+                        itemSpacing: 100,
                         items: [
                             {
                                 type: Button,
                                 title: 'Play now',
+                                h: 60,
+                                w: 170,
                                 radius: 5,
                                 icon: {
                                     src: Utils.asset('./images/play.png'),
-                                    size: 16,
-                                    spacing: 8,
+                                    size: 20,
+                                    spacing: 10,
                                 },
                                 onEnter: event => {
                                     event.fireAncestors('$enterPlayer')
@@ -72,11 +74,13 @@ export default class DetailsPage extends Lightning.Component {
                             {
                                 type: Button,
                                 title: 'Add to favourites',
+                                h: 60,
+                                w: 170,
                                 radius: 5,
                                 icon: {
                                     src: Utils.asset('./images/star.png'),
-                                    size: 16,
-                                    spacing: 8,
+                                    size: 20,
+                                    spacing: 10,
                                 },
                             },
                         ],
@@ -89,10 +93,10 @@ export default class DetailsPage extends Lightning.Component {
                     },
                     ReleaseDate: {
                         x: 1020,
-                        y: 680,
+                        y: 690,
                         text: {
                             ...textStyle,
-                            fontSize: 18,
+                            fontSize: 22,
                         },
                     },
                 },

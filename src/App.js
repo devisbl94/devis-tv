@@ -85,6 +85,16 @@ export default class App extends Lightning.Component {
                 _handleRight() {
                     this._mediaPlayer.SkipForward()
                 }
+                _captureKey(event) {
+                    switch (event.keyCode) {
+                        case 10008:
+                            this._handleBack()
+                            break
+
+                        default:
+                            return false
+                    }
+                }
             },
         ]
     }
@@ -93,8 +103,8 @@ export default class App extends Lightning.Component {
         this._setState('ShowMain')
     }
 
-    $getItemSelected(itemlSelected) {
-        this._detailsPage.data = itemlSelected
+    $getItemSelected(itemSelected) {
+        this._detailsPage.data = itemSelected
         this._setState('ShowDetails')
     }
 
